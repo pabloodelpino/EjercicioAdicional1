@@ -6,29 +6,29 @@ import java.util.Map;
 
 public class Kgen {
 
-	static String data = "";
-	
-    public static void leerFichero(String nombreFichero) {
+	private String data = "";
+
+	public String leerFichero(String nombreFichero) {
+		data = "";
     	Scanner in = null;
         FileReader fr = null;
         boolean comenzarLectura = false;
-          	
+
         try {
             fr = new FileReader(nombreFichero);
             in = new Scanner(fr);
-            
+
             while (in.hasNextLine()) {
             	String linea = in.nextLine();
+            	
                 if (comenzarLectura) {
                 	data += linea;
                 } else if (!linea.trim().isEmpty()) {
                     comenzarLectura = true;
                 }
             }
-
         } catch (IOException ioe) {            
-            ioe.printStackTrace();
-            
+        	System.out.println(ioe.getMessage());        	
         } finally {
             if (in != null) {
                 in.close();
@@ -37,23 +37,29 @@ public class Kgen {
                 try {
                     fr.close();
                 } catch (IOException ioe) {
-                    ioe.printStackTrace();
+                	System.out.println(ioe.getMessage());
                 }
             }
         }
+		return data;
     }
 
-    public static Map<String,Integer> getKgenMap(int size) {
-        Map <String, Integer> KgenMap = new HashMap<>();        
+    public Map <String,Integer> getKgenMap(int size) {
+        Map <String, Integer> KgenMap = new HashMap<>();
+
         for (int i = 0; i <= data.length() - size; i++) {
-        	String grupo = data.substring(i, i + size);
-            if (KgenMap.containsKey(grupo)) {
-                KgenMap.put(grupo, KgenMap.get(grupo) + 1);
+        	String conjunto = data.substring(i, i + size);
+
+            if (KgenMap.containsKey(conjunto)) {
+                KgenMap.put(conjunto, KgenMap.get(conjunto) + 1);
             } else {
-                KgenMap.put(grupo, 1);
+                KgenMap.put(conjunto, 1);
             }
         }
-        
         return KgenMap;
     }
+
+	public String getData() {
+		return data;
+	}
 }
